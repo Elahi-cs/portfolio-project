@@ -1,0 +1,27 @@
+version: "2.19"
+
+services:
+  npm: 
+    image: alpine:3.17
+    working_dir: /code
+    volumes:
+      - ./frontend:/code
+    user: node
+    ports:
+      - "8443:8443"
+    entrypoint: /usr/local/bin/npm
+    command: "run serve"
+    env_file: .env
+  python:
+    image: buildpack-deps:bookworm
+    working_dir: /code
+    entrypoint: /code/env/bin/python3
+    command: "manage.py runserver 0.0.0.0:80"
+    env_file: .env
+    volumes:
+      - ./backend:/code
+    ports:
+      - "80:80"
+
+
+  
